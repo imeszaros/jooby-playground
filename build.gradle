@@ -1,0 +1,34 @@
+buildscript {
+    ext {
+        joobyVersion = "2.9.0-SNAPSHOT" // 2.8.9, 2.9.0-SNAPSHOT
+    }
+}
+
+plugins {
+    id 'application'
+    id "io.spring.dependency-management" version "1.0.9.RELEASE"
+    id "com.google.osdetector" version "1.6.2"
+}
+
+group 'org.example'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "io.jooby:jooby-bom:$joobyVersion"
+    }
+}
+
+dependencies {
+    implementation "io.jooby:jooby-netty:$joobyVersion"
+    implementation 'ch.qos.logback:logback-classic:1.2.3'
+
+    annotationProcessor "io.jooby:jooby-apt:$joobyVersion"
+
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
