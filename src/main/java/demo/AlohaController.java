@@ -5,7 +5,7 @@ import io.jooby.annotations.Path;
 import io.jooby.annotations.QueryParam;
 
 @Path("/aloha")
-public class AlohaController {
+public class AlohaController extends AbstractController {
 
     @GET
     public String aloha(@QueryParam String name) {
