@@ -1,6 +1,15 @@
 buildscript {
     ext {
-        joobyVersion = "2.9.0-SNAPSHOT" // 2.8.9, 2.9.0-SNAPSHOT
+        joobyVersion = "2.9.4"
+    }
+
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+
+        classpath "io.jooby:jooby-gradle-plugin:$joobyVersion"
     }
 }
 
@@ -8,13 +17,17 @@ plugins {
     id 'application'
     id "io.spring.dependency-management" version "1.0.9.RELEASE"
     id "com.google.osdetector" version "1.6.2"
+    id 'org.jetbrains.kotlin.jvm' version '1.4.0'
 }
+
+apply plugin: "jooby"
 
 group 'org.example'
 version '1.0-SNAPSHOT'
 
+mainClassName = "demo.Main"
+
 repositories {
-    mavenLocal()
     mavenCentral()
 }
 
@@ -26,17 +39,23 @@ dependencyManagement {
 
 dependencies {
     implementation "io.jooby:jooby-netty:$joobyVersion"
+    implementation "io.jooby:jooby-test:$joobyVersion"
     implementation 'ch.qos.logback:logback-classic:1.2.3'
-
-    annotationProcessor "io.jooby:jooby-apt:$joobyVersion"
-
-    testCompile group: 'junit', name: 'junit', version: '4.12'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+    implementation 'io.reactivex.rxjava2:rxjava:2.2.20'
 }
 
-tasks.withType(JavaCompile) {
-    options.compilerArgs += [
-            '-parameters',
-            '-Ajooby.incremental=true',
-            '-Ajooby.debug=true'
-    ]
+compileKotlin {
+    kotlinOptions {
+        jvmTarget = "11"
+    }
+}
+compileTestKotlin {
+    kotlinOptions {
+        jvmTarget = "11"
+    }
+}
+
+test {
+    useJUnitPlatform()
 }
